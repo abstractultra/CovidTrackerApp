@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "CovidTracker",
+    "slug": "covid-tracker",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.abstractultra.covidtracker",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.abstractultra.covidtracker",
+      "versionCode": 1
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#6666FF"
+    }
+  }
+}
