@@ -11,17 +11,17 @@ export default function App() {
     return (
         <PaperProvider>
             <NavigationContainer>
-            <Appbar style={styles.topBar}>
-                <Appbar.Content title="CovidTracker"/>
-                <Appbar.Action icon="refresh" onPress={() => console.log("User clicked refresh")}/>
-                <Appbar.Action icon="share" onPress={() => console.log("User clicked share")}/>
-                <Appbar.Action icon="dots-vertical" onPress={() => console.log("User clicked menu")}/>
-            </Appbar>
-            <Tab.Navigator
-                barStyle={{ backgroundColor: '#66f' }}
-            >
-                <Tab.Screen name="Countries" component={CountryData} />
-                <Tab.Screen name="Provinces" component={ProvinceData} />
+                <Appbar style={styles.topBar}>
+                    <Appbar.Content title="CovidTracker"/>
+                    <Appbar.Action icon="refresh" onPress={() => console.log("User clicked refresh")}/>
+                    <Appbar.Action icon="share" onPress={() => console.log("User clicked share")}/>
+                    <Appbar.Action icon="dots-vertical" onPress={() => console.log("User clicked menu")}/>
+                </Appbar>
+                <Tab.Navigator
+                    barStyle={{ backgroundColor: '#66f' }}
+                >
+                    <Tab.Screen name="Countries" component={CountryData} />
+                    <Tab.Screen name="Provinces" component={ProvinceData} />
             </Tab.Navigator>
             </NavigationContainer>
         </PaperProvider>
