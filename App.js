@@ -62,6 +62,7 @@ export default function App() {
                 data = {countryData}
                 renderItem = {({item})=><CountryComponent country={item}/>}
                 keyExtractor={item => item.country}
+                initialNumToRender={25}
             />
             <Snackbar
                 visible = {refreshConfirmation}
