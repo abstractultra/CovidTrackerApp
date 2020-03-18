@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, FlatList, ActivityIndicator} from 'react-native';
 import {Provider as PaperProvider, Appbar, Snackbar, Card, Title, Paragraph,} from 'react-native-paper';
+import CountryComponent from "./components/CountryComponent";
 
 function getAllCountryData(callback) {
     fetch('https://covidtracker.abstractultra.com/get_country_data')
@@ -18,21 +19,6 @@ function getAllCountryData(callback) {
             }
             callback(obj);
         });
-}
-
-function CountryComponent({country}) {
-    return (
-        <Card>
-            <Card.Content>
-                <Title>{country.country}</Title>
-                <Paragraph>
-                    Confirmed Cases: {country.confirmed} {"\n"}
-                    Recovered: {country.recovered} {"\n"}
-                    Deaths: {country.deaths}
-                </Paragraph>
-            </Card.Content>
-        </Card>
-    );
 }
 
 export default function App() {
