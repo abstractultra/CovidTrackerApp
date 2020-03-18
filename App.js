@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, FlatList, ActivityIndicator} from 'react-native';
-import {Provider as PaperProvider, Appbar, Snackbar, Card, Title, Paragraph,} from 'react-native-paper';
+import {Provider as PaperProvider, Appbar, Snackbar} from 'react-native-paper';
 import CountryComponent from "./components/CountryComponent";
+import {Styles as styles} from  "./styles/styles.js";
 
 function getAllCountryData(callback) {
     fetch('https://covidtracker.abstractultra.com/get_country_data')
@@ -36,13 +37,18 @@ export default function App() {
     }, []);
     return (
         <PaperProvider>
-            <Appbar style={styles.top}>
+            <Appbar style={styles.topBar}>
                 <Appbar.Content title="CovidTracker"/>
                 <Appbar.Action icon="refresh" onPress={() => refreshData(false)}/>
                 <Appbar.Action icon="share" onPress={() => getAllCountryData()}/>
                 <Appbar.Action icon="dots-vertical" onPress={() => console.log("User clicked menu")}/>
             </Appbar>
-            <ActivityIndicator style={styles.center} size="large" color="#0000ff" />
+            <ActivityIndicator
+                animating={countryData.length === 0}
+                size="large"
+                color="#66f"
+                style={styles.loadingWheel}
+            />
             <FlatList
                 data = {countryData}
                 renderItem = {({item})=><CountryComponent country={item}/>}
@@ -62,21 +68,3 @@ export default function App() {
         </PaperProvider>
     );
 }
-
-const styles = StyleSheet.create({
-    top: {
-        position: 'relative',
-        top: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: '#66f',
-    },
-    scrollview: {
-        padding: 25,
-    },
-    center: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    }
-});
