@@ -1,14 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, FlatList} from 'react-native';
-import {
-    Provider as PaperProvider,
-    Appbar,
-    Snackbar,
-    Card,
-    Title,
-    Paragraph,
-    BottomNavigation
-} from 'react-native-paper';
+import {StyleSheet, Text, FlatList, ActivityIndicator} from 'react-native';
+import {Provider as PaperProvider, Appbar, Snackbar, Card, Title, Paragraph,} from 'react-native-paper';
 
 let countryData = [];
 
@@ -19,7 +11,7 @@ function getAllCountryData(callback) {
             let obj = [];
             for (let [key, value] of Object.entries(data)) {
                 let data = {
-                    title: key,
+                    country: key,
                     confirmed: value["confirmed"],
                     recovered: value["recovered"],
                     deaths: value["deaths"],
@@ -32,24 +24,18 @@ function getAllCountryData(callback) {
 }
 
 function CountryComponent({country}) {
-    if (countryData) {
-        return (
-            <Card>
-                <Card.Content>
-                    <Title>{country.title}</Title>
-                    <Paragraph>
-                        Confirmed Cases: {country.confirmed} {"\n"}
-                        Recovered: {country.recovered} {"\n"}
-                        Deaths: {country.deaths}
-                    </Paragraph>
-                </Card.Content>
-            </Card>
-        );
-    } else {
-        return (
-            <Text/>
-        )
-    }
+    return (
+        <Card>
+            <Card.Content>
+                <Title>{country.country}</Title>
+                <Paragraph>
+                    Confirmed Cases: {country.confirmed} {"\n"}
+                    Recovered: {country.recovered} {"\n"}
+                    Deaths: {country.deaths}
+                </Paragraph>
+            </Card.Content>
+        </Card>
+    );
 }
 
 export default function App() {
@@ -73,9 +59,11 @@ export default function App() {
                 <Appbar.Action icon="share" onPress={() => getAllCountryData()}/>
                 <Appbar.Action icon="dots-vertical" onPress={() => console.log("User clicked menu")}/>
             </Appbar>
+            <ActivityIndicator style={styles.center} size="large" color="#0000ff" />
             <FlatList
                 data = {countryData}
                 renderItem = {({item})=><CountryComponent country={item}/>}
+                keyExtractor={item => item.country}
             />
             <Snackbar
                 visible = {refreshConfirmation}
