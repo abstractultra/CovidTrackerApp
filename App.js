@@ -27,6 +27,12 @@ export default function App() {
     const [refreshConfirmation, confirmRefresh] = useState(false);
     function refreshData(firstOpen) {
         getAllCountryData(function(dataVariable) {
+            dataVariable.sort(function(obj1, obj2) {
+                let a = obj1.country, b = obj2.country;
+                if (a > b) return 1;
+                else if (a < b) return -1;
+                else return 0;
+            });
             updateData(dataVariable);
             console.log("Data refreshed");
             if (firstOpen === false) confirmRefresh(true);
@@ -35,6 +41,14 @@ export default function App() {
     useEffect(() => {
         refreshData(true);
     }, []);
+    const loadWheel = (
+        <ActivityIndicator
+            animating={countryData.length === 0}
+            size="large"
+            color="#66f"
+            style={styles.loadingWheel}
+        />
+    );
     return (
         <PaperProvider>
             <Appbar style={styles.topBar}>
@@ -43,12 +57,7 @@ export default function App() {
                 <Appbar.Action icon="share" onPress={() => getAllCountryData()}/>
                 <Appbar.Action icon="dots-vertical" onPress={() => console.log("User clicked menu")}/>
             </Appbar>
-            <ActivityIndicator
-                animating={countryData.length === 0}
-                size="large"
-                color="#66f"
-                style={styles.loadingWheel}
-            />
+            {countryData.length === 0 ? loadWheel : null}
             <FlatList
                 data = {countryData}
                 renderItem = {({item})=><CountryComponent country={item}/>}
