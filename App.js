@@ -1,80 +1,29 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, FlatList, ActivityIndicator} from 'react-native';
-import {Provider as PaperProvider, Appbar, Snackbar} from 'react-native-paper';
-import CountryComponent from "./components/CountryComponent";
+import React from 'react';
+import {Provider as PaperProvider, Appbar} from 'react-native-paper';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {Styles as styles} from  "./styles/styles.js";
-
-function getAllCountryData(callback) {
-    fetch('https://covidtracker.abstractultra.com/get_country_data')
-        .then(response => response.json())
-        .then(data => {
-            let obj = [];
-            for (let [key, value] of Object.entries(data)) {
-                let data = {
-                    country: key,
-                    confirmed: value["confirmed"],
-                    recovered: value["recovered"],
-                    deaths: value["deaths"],
-                };
-                obj.push(data);
-            }
-            callback(obj);
-        });
-}
+import {NavigationContainer} from "@react-navigation/native";
+import CountryData from "./components/CountryPage";
+import ProvinceData from "./components/ProvincePage";
 
 export default function App() {
-    const [countryData, updateData] = useState([]);
-    const [refreshConfirmation, confirmRefresh] = useState(false);
-    function refreshData(firstOpen) {
-        getAllCountryData(function(dataVariable) {
-            dataVariable.sort(function(obj1, obj2) {
-                let a = obj1.country, b = obj2.country;
-                if (a > b) return 1;
-                else if (a < b) return -1;
-                else return 0;
-            });
-            updateData(dataVariable);
-            console.log("Data refreshed");
-            if (firstOpen === false) confirmRefresh(true);
-        });
-    }
-    useEffect(() => {
-        refreshData(true);
-    }, []);
-    const loadWheel = (
-        <ActivityIndicator
-            animating={countryData.length === 0}
-            size="large"
-            color="#66f"
-            style={styles.loadingWheel}
-        />
-    );
+    const Tab = createMaterialBottomTabNavigator();
     return (
         <PaperProvider>
+            <NavigationContainer>
             <Appbar style={styles.topBar}>
                 <Appbar.Content title="CovidTracker"/>
-                <Appbar.Action icon="refresh" onPress={() => refreshData(false)}/>
-                <Appbar.Action icon="share" onPress={() => getAllCountryData()}/>
+                <Appbar.Action icon="refresh" onPress={() => console.log("User clicked refresh")}/>
+                <Appbar.Action icon="share" onPress={() => console.log("User clicked share")}/>
                 <Appbar.Action icon="dots-vertical" onPress={() => console.log("User clicked menu")}/>
             </Appbar>
-            {countryData.length === 0 ? loadWheel : null}
-            <FlatList
-                data = {countryData}
-                renderItem = {({item})=><CountryComponent country={item}/>}
-                keyExtractor={item => item.country}
-                initialNumToRender={25}
-            />
-            <Snackbar
-                visible = {refreshConfirmation}
-                onDismiss = {() => confirmRefresh(false)}
-                action={{
-                    label: 'Dismiss',
-                    onPress: () => {
-                        confirmRefresh(false);
-                    },
-                }}>
-                Data updated!
-            </Snackbar>
+            <Tab.Navigator
+                barStyle={{ backgroundColor: '#66f' }}
+            >
+                <Tab.Screen name="Countries" component={CountryData} />
+                <Tab.Screen name="Provinces" component={ProvinceData} />
+            </Tab.Navigator>
+            </NavigationContainer>
         </PaperProvider>
     );
 }
