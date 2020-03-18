@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, FlatList, ActivityIndicator} from 'react-native';
 import {Provider as PaperProvider, Appbar, Snackbar, Card, Title, Paragraph,} from 'react-native-paper';
 
-let countryData = [];
-
 function getAllCountryData(callback) {
     fetch('https://covidtracker.abstractultra.com/get_country_data')
         .then(response => response.json())
@@ -18,8 +16,7 @@ function getAllCountryData(callback) {
                 };
                 obj.push(data);
             }
-            countryData = obj;
-            callback((new Date()).getTime());
+            callback(obj);
         });
 }
 
@@ -39,7 +36,7 @@ function CountryComponent({country}) {
 }
 
 export default function App() {
-    const [lastUpdate, updateData] = useState(0);
+    const [countryData, updateData] = useState([]);
     const [refreshConfirmation, confirmRefresh] = useState(false);
     function refreshData(firstOpen) {
         getAllCountryData(function(dataVariable) {
