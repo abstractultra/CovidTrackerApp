@@ -5,6 +5,7 @@ import {Styles as styles} from  "./styles/styles.js";
 import {NavigationContainer} from "@react-navigation/native";
 import CountryData from "./components/CountryPage";
 import ProvinceData from "./components/ProvincePage";
+import CovidMap from "./components/CovidMap";
 import {MaterialCommunityIcons} from "react-native-vector-icons";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -40,6 +41,16 @@ export default function App() {
                             tabBarLabel: 'Provinces',
                             tabBarIcon: ({ color }) => (
                                 <MaterialCommunityIcons name="image-filter-hdr" color={color} size={26} />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Map"
+                        component={CovidMap}
+                        options={{
+                            tabBarLabel: 'Map',
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="map" color={color} size={26} />
                             ),
                         }}
                     />
