@@ -5,6 +5,7 @@ import {Styles as styles} from  "./styles/styles.js";
 import {NavigationContainer} from "@react-navigation/native";
 import CountryData from "./components/CountryPage";
 import ProvinceData from "./components/ProvincePage";
+import MaterialCommunityIcons from "react-native-vector-icons";
 
 export default function App() {
     const Tab = createMaterialBottomTabNavigator();
@@ -19,9 +20,23 @@ export default function App() {
                 </Appbar>
                 <Tab.Navigator
                     barStyle={{ backgroundColor: '#66f' }}
+                    initialRouteName="Countries"
+                    labelStyle={{ fontSize: 12 }}
                 >
-                    <Tab.Screen name="Countries" component={CountryData} />
-                    <Tab.Screen name="Provinces" component={ProvinceData} />
+                    <Tab.Screen
+                        name="Countries"
+                        component={CountryData}
+                        options={{
+                            tabBarLabel: 'Countries',
+                            tabBarIcon: () => (
+                                <MaterialCommunityIcons name="home" size={26} />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Provinces"
+                        component={ProvinceData}
+                    />
             </Tab.Navigator>
             </NavigationContainer>
         </PaperProvider>
