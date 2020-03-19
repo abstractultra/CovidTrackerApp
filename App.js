@@ -5,16 +5,16 @@ import {Styles as styles} from  "./styles/styles.js";
 import {NavigationContainer} from "@react-navigation/native";
 import CountryData from "./components/CountryPage";
 import ProvinceData from "./components/ProvincePage";
-import MaterialCommunityIcons from "react-native-vector-icons";
+import {MaterialCommunityIcons} from "react-native-vector-icons";
+
+const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
-    const Tab = createMaterialBottomTabNavigator();
     return (
         <PaperProvider>
             <NavigationContainer>
                 <Appbar style={styles.topBar}>
                     <Appbar.Content title="CovidTracker"/>
-                    <Appbar.Action icon="refresh" onPress={() => console.log("User clicked refresh")}/>
                     <Appbar.Action icon="share" onPress={() => console.log("User clicked share")}/>
                     <Appbar.Action icon="dots-vertical" onPress={() => console.log("User clicked menu")}/>
                 </Appbar>
@@ -28,14 +28,20 @@ export default function App() {
                         component={CountryData}
                         options={{
                             tabBarLabel: 'Countries',
-                            tabBarIcon: () => (
-                                <MaterialCommunityIcons name="home" size={26} />
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="flag-variant" color={color} size={26} />
                             ),
                         }}
                     />
                     <Tab.Screen
                         name="Provinces"
                         component={ProvinceData}
+                        options={{
+                            tabBarLabel: 'Provinces',
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="image-filter-hdr" color={color} size={26} />
+                            ),
+                        }}
                     />
             </Tab.Navigator>
             </NavigationContainer>

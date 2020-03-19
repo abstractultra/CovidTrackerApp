@@ -58,6 +58,8 @@ export default function ProvinceData() {
                 renderItem = {({item})=><ProvinceComponent province={item}/>}
                 keyExtractor={item => item.province}
                 initialNumToRender={25}
+                onRefresh={()=>refreshData(false)}
+                refreshing={false}
             />
             <Snackbar
                 visible = {refreshConfirmation}
