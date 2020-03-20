@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import {StyleSheet, Dimensions} from "react-native";
 
 export {styles as Styles};
 
@@ -17,5 +17,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
+    },
+    covidMap: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
     }
 });

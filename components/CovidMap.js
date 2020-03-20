@@ -1,91 +1,66 @@
 import MapView from "react-native-maps";
-import React from "react";
+import {View} from "react-native";
+import React, {useEffect, useState} from "react";
+import {Styles as styles} from "../styles/styles";
+
+function getWeightedLatLng(callback) {
+    fetch('https://covidtracker.abstractultra.com/get_country_data')
+        .then(response => response.json())
+        .then(data => {
+            let arr = [];
+            for (let [key, value] of Object.entries(data)) {
+                if (!value["latitude"] || !value["longitude"]) continue;
+                let obj = {
+                    latitude: value["latitude"],
+                    longitude: value["longitude"],
+                    weight: value["confirmed"],
+                };
+                if (obj["weight"] > 10) obj["weight"] = 10;
+                arr.push(obj);
+            }
+            fetch('https://covidtracker.abstractultra.com/get_provincial_data')
+                .then(response => response.json())
+                .then(data => {
+                    let arr2 = [];
+                    for (let [key, value] of Object.entries(data)) {
+                        if (!value["latitude"] || !value["longitude"]) continue;
+                        let obj2 = {
+                            latitude: value["latitude"],
+                            longitude: value["longitude"],
+                            weight: value["confirmed"],
+                        };
+                        if (obj2["weight"] > 10) obj2["weight"] = 10;
+                        arr2.push(obj2);
+                    }
+                    arr = arr.concat(arr2);
+                    callback(arr);
+                });
+        });
+}
 
 export default function CovidMap() {
-    let points = [{latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-        {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-        {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-        {latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-        {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-        {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-        {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-        {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-        {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-        {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-        {latitude: 6.841776681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-        {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-        {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-        {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-        {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-        {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-        {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-        {latitude: 6.841776681, longitude: 79.869319, weight: 1},
-        {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-
-    ];
+    const [data, updateData] = useState([
+        {
+            latitude: 0,
+            longitude: 0,
+            weight: 1
+        },
+    ]);
+    useEffect(() => {
+        getWeightedLatLng(function(calledback) {
+            updateData(calledback);
+        });
+    }, []);
     return (
-        <MapView
-            provider={MapView.PROVIDER_GOOGLE}
-        >
-            <MapView.Heatmap
-                points={points}
-                opacity={1}
-                radius={20}
-                maxIntensity={100}
-                gradientSmoothing={10}
-                heatmapMode={"POINTS_DENSITY"}
-            />
-        </MapView>
+        <View style = {styles.center}>
+            <MapView
+                style={styles.covidMap}
+            >
+                <MapView.Heatmap
+                    points={data}
+                    radius={50}
+                />
+            </MapView>
+        </View>
     )
 }
