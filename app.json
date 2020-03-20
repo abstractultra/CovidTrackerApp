@@ -29,7 +29,12 @@
     },
     "android": {
       "package": "com.abstractultra.covidtracker",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCnUAwAyBiruRyu1JwH-JmDoD0uwdEDQm4"
+        }
+      }
     },
     "androidStatusBar": {
       "backgroundColor": "#6666FF"
