@@ -38,6 +38,8 @@
     },
     "androidStatusBar": {
       "backgroundColor": "#6666FF"
-    }
+    },
+    "description": "Open source tracking app for COVID-19",
+    "githubUrl": "https://github.com/abstractultra/CovidTrackerApp"
   }
 }
